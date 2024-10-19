@@ -19,16 +19,18 @@ def get_orders_per_status(count: int, status: str, token: str) -> list:
     :param token: Токен
     :return:
     """
-
+    print(f"Получение блюд") # TODO: Заменить на логирование
     url = SETTINGS.BASE_API_URL + '/orders'
-    payload = {"token": token, "per_page": count, "status": status}
-    r = requests.post(url, params=payload)
+    payload = {"token": token, "status": status, "per_page": count}
+    r = requests.get(url, params=payload)
     code = r.status_code
+    print(f"Получение блюд: код ответа - {code}") # TODO: Заменить на логирование
     if code == 200:
-        data = json.loads(r.json())
+        data = json.loads(r.text)
         orders = data.get("orders")
+        print(f"Получено {len(orders)} блюд со статусом {status}")
         return orders
 
     else:
-        print(code) # TODO: Заменить на логирование
+        print(f"Блюда не получены, код ответа: {code}")  # TODO: Заменить на логирование
 
