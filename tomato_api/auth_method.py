@@ -14,7 +14,7 @@ def get_tomato_auth_token() -> dict:
     Токен можно также передать посредством query-параметра token: /api/orders?token=<TOKEN>.
     """
     print(SETTINGS.TOMATO_LOGIN)
-    url = SETTINGS.API_URL + '/session'
+    url = SETTINGS.BASE_API_URL + '/session'
     payload = {"login": SETTINGS.TOMATO_LOGIN, "password": SETTINGS.TOMATO_PASSWORD}
     r = requests.post(url, params=payload)
     code = r.status_code

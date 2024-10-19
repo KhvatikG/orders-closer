@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     TOMATO_LOGIN: str
     TOMATO_PASSWORD: str
 
-    API_URL: str = "http://smartomato.ru/api"
+    BASE_API_URL: str = "http://smartomato.ru/api"
 
 
 SETTINGS = Settings()
