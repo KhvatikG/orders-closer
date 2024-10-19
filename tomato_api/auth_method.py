@@ -17,15 +17,15 @@ def get_tomato_auth_token() -> dict:
     payload = {"login": SETTINGS.TOMATO_LOGIN, "password": SETTINGS.TOMATO_PASSWORD}
     r = requests.post(url, params=payload)
     code = r.status_code
-    data = json.loads(r.json())
+    data = json.loads(r.text)
     if code == 200:
         try:
-            token = data['staff_members'][0]['meta']['token']
+            token = data['meta']['token']
 
             return {"code": code, "token": token}
 
         except Exception as e:
-            print(e) # TODO: заменить на логирование
+            print(f"ОШИБКА АВТОРИЗАЦИИ: {e}") # TODO: заменить на логирование
     else:
         print("Auth filed") # TODO: заменить на логирование
         return {"code": code}
