@@ -1,4 +1,4 @@
-from core.settings import SETTINGS
+from tomato_api.core.settings import SETTINGS
 from tomato_api.auth_method import get_tomato_auth_token
 from tomato_api.get_orders import get_orders_per_status
 from tomato_api.close_orders import close_orders

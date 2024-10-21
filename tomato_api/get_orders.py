@@ -4,7 +4,7 @@
 import json
 import requests
 
-from core.settings import SETTINGS
+from tomato_api.core.settings import SETTINGS
 
 
 def get_orders_per_status(count: int, status: str, token: str) -> list:

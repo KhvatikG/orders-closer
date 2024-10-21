@@ -1,7 +1,7 @@
 import json
 import requests
 
-from core.settings import SETTINGS
+from tomato_api.core.settings import SETTINGS
 
 
 def get_tomato_auth_token() -> dict:
@@ -28,7 +28,7 @@ def get_tomato_auth_token() -> dict:
             print(f"ОШИБКА АВТОРИЗАЦИИ: {e}") # TODO: заменить на логирование
     else:
         print("Auth filed") # TODO: заменить на логирование
-        return {"code": code}
+        return {"code": code, "token": "error"}
 
 
 

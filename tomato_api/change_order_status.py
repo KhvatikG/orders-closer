@@ -1,6 +1,7 @@
+# TODO: Заменить принты на логирование
 import requests
 
-from core.settings import SETTINGS
+from tomato_api.core.settings import SETTINGS
 
 
 def change_order_status(order: dict, new_status: str, token: str):
