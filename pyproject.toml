@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "orderscloser"
+version = "0.1.0"
+description = "Закрывает незакрытые заказы в смартомато."
+authors = ["Garik <khvatik.igor@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pydantic = "^2.9.2"
+pydantic-settings = "^2.6.0"
+loguru = "^0.7.3"
+fastapi = {extras = ["all"], version = "^0.115.6"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
