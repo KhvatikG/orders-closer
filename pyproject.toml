@@ -11,6 +11,7 @@ pydantic = "^2.9.2"
 pydantic-settings = "^2.6.0"
 loguru = "^0.7.3"
 fastapi = {extras = ["all"], version = "^0.115.6"}
+uvicorn = {extras = ["standard"], version = "^0.34.0"}
 
 
 [build-system]
