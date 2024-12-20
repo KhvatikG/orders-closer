@@ -6,8 +6,6 @@ load_dotenv()  # Загружаем переменные среды из .env
 
 
 class Settings(BaseSettings):
-    TOMATO_LOGIN: str
-    TOMATO_PASSWORD: str
 
     COUNT_ORDERS_FOR_GET_ORDERS: int = 400
 
