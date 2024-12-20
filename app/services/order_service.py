@@ -42,7 +42,7 @@ def cancel_unpaid_orders_service(token: str, archive: bool = True) -> None:
         ) from e
 
 
-def close_confirmed_orders_service(token: str, archive: bool = True) -> str:
+async def close_confirmed_orders_service(token: str, archive: bool = True) -> str:
     """
     Закрывает заказы со статусом подтвержден.
     :param token: Токен аутентификации смартомато
@@ -60,7 +60,7 @@ def close_confirmed_orders_service(token: str, archive: bool = True) -> str:
         )
 
         # Закрываем полученные заказы
-        result_info = close_orders(orders=confirm_orders, token=token)
+        result_info = await close_orders(orders=confirm_orders, token=token)
         logger.info(f"Закрытие заказов завершено: {result_info}")
 
         return result_info

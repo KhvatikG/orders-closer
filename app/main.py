@@ -6,7 +6,7 @@ from app.core.logger_settings import logger_setup
 
 logger_setup()
 
-app = FastAPI(title="OrderCloser API", version="1.0.0")
+app = FastAPI(title="OrderCloser API", version="2.0.0")
 
 # Подключение маршрутов
 app.include_router(endpoints.router)

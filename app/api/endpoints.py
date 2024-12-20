@@ -1,8 +1,17 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Body
+from pydantic import BaseModel
+
 from app.services.order_service import cancel_unpaid_orders_service, close_confirmed_orders_service
 from loguru import logger
 
 router = APIRouter()
+
+
+class TokenBody(BaseModel):
+    """
+    Тело запроса для получения токена
+    """
+    token: str
 
 
 @router.get("/health")
@@ -19,12 +28,13 @@ async def cancel_unpaid_orders_endpoint(token: str):
 
 
 @router.post("/orders/close-confirmed")
-async def close_confirmed_orders_endpoint(token: str):
+async def close_confirmed_orders_endpoint(body: TokenBody = Body(...)):
     """
     Эндпоинт для закрытия подтвержденных заказов.
     """
     try:
-        result_info = close_confirmed_orders_service(token)
+        token = body.token
+        result_info = await close_confirmed_orders_service(token)
         return {"message": result_info}
     except HTTPException as e:
         raise e  # Передаем HTTPException дальше

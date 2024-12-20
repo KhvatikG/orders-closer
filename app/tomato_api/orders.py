@@ -1,5 +1,6 @@
 import json
 
+import httpx
 import requests
 from loguru import logger
 
@@ -7,7 +8,7 @@ from app.core.settings import SETTINGS
 from app.tomato_api.exceptions.extentions import UpdateOrderError, NetworkError, GetOrdersError
 
 
-def close_orders(orders: list, token: str) -> str:
+async def close_orders(orders: list, token: str) -> str:
     """
     Закрывает заказы
     :param orders: список заказов
@@ -26,7 +27,7 @@ def close_orders(orders: list, token: str) -> str:
         counter += 1
 
         try:
-            change_order_status(
+            await change_order_status(
                 order=order,
                 new_status='complete',
                 token=token
@@ -183,7 +184,7 @@ def get_count_orders_per_status(status: str, token: str, archive=False, **kwargs
         raise GetOrdersError(f"Неожиданная ошибка при получении количества заказов", e)
 
 
-def change_order_status(order: dict, new_status: str, token: str) -> None:
+async def change_order_status(order: dict, new_status: str, token: str) -> None:
     """
     Изменяет статус заказа order на new_status
 
@@ -198,20 +199,22 @@ def change_order_status(order: dict, new_status: str, token: str) -> None:
         url = SETTINGS.BASE_API_URL + '/orders/' + str(order['id']) + '/status'
         logger.info(f"URL - {url}")
         payload = {"token": token, "status": new_status}
-        response = requests.put(url, params=payload)
-        success = response.status_code == 200
 
-        response.raise_for_status()
+        async with httpx.AsyncClient() as client:
+            response = await client.put(url, params=payload)
+            success = response.status_code == 200
 
-        if success:
-            logger.info(f"Заказ {order.get('number')} успешно переведен в статус {new_status}.")
-        else:
-            logger.error(f"Неожиданный код ответа: {order.get('number')}. Код: {response.status_code}")
-            raise UpdateOrderError(
-                f"Неожиданный код ответа: {order.get('number')}. Код: {response.status_code}"
-            )
+            response.raise_for_status()
 
-    except requests.RequestException as e:
+            if success:
+                logger.info(f"Заказ {order.get('number')} успешно переведен в статус {new_status}.")
+            else:
+                logger.error(f"Неожиданный код ответа: {order.get('number')}. Код: {response.status_code}")
+                raise UpdateOrderError(
+                    f"Неожиданный код ответа: {order.get('number')}. Код: {response.status_code}"
+                )
+
+    except httpx.HTTPStatusError as e:
         error_info = f"Ошибка изменения статуса заказа {order.get('number')}. Ошибка: {e}"
         logger.exception(error_info)
         raise NetworkError(error_info, e)
