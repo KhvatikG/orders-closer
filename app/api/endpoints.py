@@ -5,6 +5,11 @@ from loguru import logger
 router = APIRouter()
 
 
+@router.get("/health")
+async def health_check():
+    return {"status": "healthy"}
+
+
 @router.post("/orders/cancel-unpaid")
 async def cancel_unpaid_orders_endpoint(token: str):
     """
