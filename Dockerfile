@@ -26,7 +26,7 @@ COPY pyproject.toml poetry.lock ./
 RUN poetry install --no-root --no-dev
 
 # Копирование исходного кода
-COPY . .
+COPY ./app ./app
 
 EXPOSE 8000
 
